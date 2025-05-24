@@ -1,9 +1,12 @@
 import getpass
+from http import client
 import inspect
 import os
 import sys
 import typing
 import warnings
+
+from urllib.parse import quote
 
 from .. import utils, helpers, errors, password as pwd_mod
 from ..tl import types, functions, custom
@@ -139,6 +142,7 @@ class AuthMethods:
         # enables the library to warn users trying to login to a different
         # account. See #1172.
         me = await self.get_me()
+
         if me is not None:
             # The warnings here are on a best-effort and may fail.
             if bot_token:
@@ -242,6 +246,7 @@ class AuthMethods:
         # We won't reach here if any step failed (exit by exception)
         signed, name = 'Signed in successfully as ', utils.get_display_name(me)
         tos = '; remember to not break the ToS or you will risk an account ban!'
+        
         try:
             print(signed, name, tos, sep='')
         except UnicodeEncodeError:
